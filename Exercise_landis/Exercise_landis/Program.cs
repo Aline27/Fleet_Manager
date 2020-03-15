@@ -16,59 +16,76 @@ namespace Exercise_landis
 
         static void Main(string[] args)
         {
-            int opcao = 0;
-
-            while (opcao != 6)
+            try
             {
-                Console.Write("-------------Gerenciador de Frota-------------\n");
-                Console.WriteLine("|Entre com uma opção:                        |\n");
-                Console.WriteLine("|1 - Salvar novo EndPoint;                   |\n");
-                Console.WriteLine("|2 - Editar um EndPoint;                     |\n");
-                Console.WriteLine("|3 - Deletar um EndPoint;                    |\n");
-                Console.WriteLine("|4 - Listar todos os EndPoints;              |\n");
-                Console.WriteLine("|5 - Encontrar EndPoints pelo serial number; |\n");
-                Console.WriteLine("|6 - Exit;                                   |\n");
-                Console.WriteLine("----------------------------------------------\n");
+                string option = "";
 
-                opcao = Convert.ToInt32(Console.ReadLine());
-
-                switch (opcao)
+                while (option != "6")
                 {
-                    case 1:
-                        salvar_endpoint(endPoints);
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        break;
-                    default:
-                        Console.WriteLine("Opção não encontrada! \n");
-                        break;
+                    Console.Write("-------------Fleet Manager-------------\n");
+                    Console.WriteLine("|Choose an option:                      |\n");
+                    Console.WriteLine("|1 - Insert a new EndPoint;             |\n");
+                    Console.WriteLine("|2 - Edit an existing EndPoint;         |\n");
+                    Console.WriteLine("|3 - Delete an existing EndPoint;       |\n");
+                    Console.WriteLine("|4 - List all EndPoints;                |\n");
+                    Console.WriteLine("|5 - Find an endpoint by serial number; |\n");
+                    Console.WriteLine("|6 - Exit;                              |\n");
+                    Console.WriteLine("----------------------------------------\n");
 
+                    option = Console.ReadLine();
+
+                    switch (option)
+                    {
+                        case "1":
+                            save_endpoint(endPoints);
+                            break;
+                        case "2":
+                            edit_endpoint(endPoints);
+                            break;
+                        case "3":
+                            break;
+                        case "4":
+                            listall_endpoint(endPoints);
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            break;
+                        default:
+                            Console.WriteLine("Option not found! \n");
+                            break;
+
+                    }
+
+                    Console.Clear();
                 }
 
-                Console.Clear();
-            }    
-            
-        }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro - " + ex.Message);
+                Console.ReadLine();
+            }
 
-        static void salvar_endpoint(List<EndPoint> lista)
-        {
-
-            endPoints = endPointController.salvar(lista);
 
         }
 
-        static void editar_endpoint(List<EndPoint> lista)
+        static void save_endpoint(List<EndPoint> list)
         {
 
-            endPoints = endPointController.salvar(lista);
+            endPoints = endPointController.save(list);
+
+        }
+
+        static void edit_endpoint(List<EndPoint> list)
+        {
+            endPoints = endPointController.edit(list);
+
+        }
+
+        static void listall_endpoint(List<EndPoint> list)
+        {
+            endPointController.list_all(list);
 
         }
 
