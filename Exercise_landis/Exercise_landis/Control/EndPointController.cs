@@ -14,6 +14,8 @@ namespace Exercise_landis.Control
         {
             try
             {
+                Console.Clear();
+
                 EndPoint endPoint = new EndPoint();
                 Console.WriteLine("EndPoint information: \n ");
                 Console.WriteLine("- Serial Number: ");
@@ -29,6 +31,8 @@ namespace Exercise_landis.Control
 
                 endPoints.Add(endPoint);
 
+                Console.WriteLine("Serial Number saved successfully");
+                Console.ReadLine();
             }
             catch (Exception ex)
             {
@@ -42,6 +46,8 @@ namespace Exercise_landis.Control
 
         public List<EndPoint> edit (List<EndPoint> endPoints)
         {
+            Console.Clear();
+
             Console.WriteLine("Which serial number do you want to edit? \n");
             string serial = Console.ReadLine();
 
@@ -54,6 +60,9 @@ namespace Exercise_landis.Control
 
                 item.Switch_state = new_state;
 
+                Console.WriteLine("Serial Number edited successfully");
+                Console.ReadLine();
+
             }
             else
             {
@@ -65,10 +74,31 @@ namespace Exercise_landis.Control
             return endPoints;
         }
 
-        public bool delete (List<EndPoint> endPoints)
+        public List<EndPoint> delete (List<EndPoint> endPoints)
         {
+            Console.Clear();
 
-            return true;
+            Console.WriteLine("Which serial number do you want to delete? \n");
+            string serial = Console.ReadLine();
+
+            if (endPoints.Exists(p => p.Serial_number == serial))
+            {
+                var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+
+                endPoints.Remove(item);
+
+                Console.WriteLine("Serial Number removed successfully");
+                Console.ReadLine();
+
+            }
+            else
+            {
+                Console.WriteLine("Serial Number not found");
+                Console.ReadLine();
+            }
+
+
+            return endPoints;
         }
 
         public void list_all (List<EndPoint> endPoints)

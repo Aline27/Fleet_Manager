@@ -43,6 +43,7 @@ namespace Exercise_landis
                             edit_endpoint(endPoints);
                             break;
                         case "3":
+                            delete_endpoint(endPoints);
                             break;
                         case "4":
                             listall_endpoint(endPoints);
@@ -72,21 +73,22 @@ namespace Exercise_landis
 
         static void save_endpoint(List<EndPoint> list)
         {
-
             endPoints = endPointController.save(list);
-
         }
 
         static void edit_endpoint(List<EndPoint> list)
         {
             endPoints = endPointController.edit(list);
-
         }
 
         static void listall_endpoint(List<EndPoint> list)
         {
             endPointController.list_all(list);
+        }
 
+        static void delete_endpoint(List<EndPoint> list)
+        {
+            endPoints = endPointController.delete(list);
         }
 
     }
