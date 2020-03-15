@@ -26,8 +26,7 @@ namespace Exercise_landis.Control
                 endPoint.Meter_number = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("- Meter fw version: ");
                 endPoint.Meter_fw_version = Console.ReadLine();
-                Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
-                endPoint.Switch_state = Convert.ToInt32(Console.ReadLine());
+                endPoint = validate_switch_state(endPoint);
 
                 endPoints.Add(endPoint);
 
@@ -41,6 +40,25 @@ namespace Exercise_landis.Control
             }
 
             return endPoints;
+
+        }
+
+        private EndPoint validate_switch_state(EndPoint endPoint)
+        {
+            int state = 5;
+            while (state != 0 && state != 1 && state != 2)
+            {
+                Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
+                state = Convert.ToInt32(Console.ReadLine());
+                if (state == 0 || state == 1 || state == 2)
+                    endPoint.Switch_state = state;
+                else
+                {
+                    Console.WriteLine("Invalid Number");
+                }
+            }
+
+            return endPoint;
 
         }
 
@@ -123,12 +141,33 @@ namespace Exercise_landis.Control
             Console.ReadLine();
         }
 
-        public EndPoint find_by_serial (string serial, List<EndPoint> endPoints)
+        public void find_by_serial (List<EndPoint> endPoints)
         {
-            EndPoint endPoint = new EndPoint();
+            Console.Clear();
+
+            Console.WriteLine("Which serial number do you want to find? \n");
+            string serial = Console.ReadLine();
+
+            if (endPoints.Exists(p => p.Serial_number == serial))
+            {
+                var elemento = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+
+                Console.WriteLine("--------------Result------------");
+                Console.WriteLine("Serial Number: " + elemento.Serial_number);
+                Console.WriteLine("Model Id: " + elemento.Meter_model_id);
+                Console.WriteLine("Meter number: " + elemento.Meter_number);
+                Console.WriteLine("FW version: " + elemento.Meter_fw_version);
+                Console.WriteLine("Switch state: " + elemento.Switch_state);
+
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("Serial Number not found");
+                Console.ReadLine();
+            }
 
 
-            return endPoint;
         }
 
         public void exit()

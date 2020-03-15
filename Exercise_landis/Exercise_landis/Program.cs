@@ -49,6 +49,7 @@ namespace Exercise_landis
                             listall_endpoint(endPoints);
                             break;
                         case "5":
+                            find_endpoint_by_serial(endPoints);
                             break;
                         case "6":
                             break;
@@ -67,8 +68,6 @@ namespace Exercise_landis
                 Console.WriteLine("Erro - " + ex.Message);
                 Console.ReadLine();
             }
-
-
         }
 
         static void save_endpoint(List<EndPoint> list)
@@ -91,5 +90,9 @@ namespace Exercise_landis
             endPoints = endPointController.delete(list);
         }
 
+        static void find_endpoint_by_serial(List<EndPoint> list)
+        {
+            endPointController.find_by_serial(list);
+        }
     }
 }
