@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Exercise_landis.Model;
 
-public class Class1
+namespace Exercise_landis.Control
 {
-	public Class1()
+	public class EndPointController
 	{
+
 	}
 }

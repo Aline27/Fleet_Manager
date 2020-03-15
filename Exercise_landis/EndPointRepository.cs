@@ -1,8 +1,9 @@
 ﻿using System;
 
-public class Class1
+namespace Exercise_landis.Model
 {
-	public Class1()
-	{
-	}
+    public class EndPointRepository
+    {
+
+    }
 }
