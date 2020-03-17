@@ -4,19 +4,19 @@ namespace Exercise_landis.Model
 {
 	public class EndPoint 
 	{
-        private string serial_number;
-        private int meter_model_id;
-        private int meter_number;
-        private string meter_fw_version;
-        private int switch_state;
+        private string serialNumber;
+        private int meterModelId;
+        private int meterNumber;
+        private string meterFWVersion;
+        private int switchState;
 
-        public EndPoint (string number, int model_id, int meter_number, string fw_version, int state)
+        public EndPoint (string number, int modelId, int meterNumber, string fwVersion, int state)
         {
-            this.serial_number = number;
-            this.meter_model_id = model_id;
-            this.meter_number = meter_number;
-            this.meter_fw_version = fw_version;
-            this.switch_state = state;
+            this.serialNumber = number;
+            this.meterModelId = modelId;
+            this.meterNumber = meterNumber;
+            this.meterFWVersion = fwVersion;
+            this.switchState = state;
         }
 
         public EndPoint()
@@ -24,85 +24,73 @@ namespace Exercise_landis.Model
 
         }
 
-        public string Serial_number
+        public string SerialNumber
         {
             set
             {
-                this.serial_number = value;
+                this.serialNumber = value;
             }
             get
             {
-                return serial_number;
+                return serialNumber;
             }
         }
-        public int Meter_model_id
+        public int MeterModelId
         {
             set
             {
-                this.meter_model_id = value;
+                this.meterModelId = value;
             }
             get
             {
-                return meter_model_id;
+                return meterModelId;
             }
         }
-        public int Meter_number
+        public int MeterNumber
         {
             set
             {
-                this.meter_number = value;
+                this.meterNumber = value;
             }
             get
             {
-                return meter_number;
+                return meterNumber;
             }
         }
-        public string Meter_fw_version
+        public string MeterFwVersion
         {
             set
             {
-                this.meter_fw_version = value;
+                this.meterFWVersion = value;
             }
             get
             {
-                return meter_fw_version;
-            }
-        }
-
-        public int Switch_state
-        {
-            set
-            {
-
-                this.switch_state = value;
-            }
-            get
-            {
-                return switch_state;
+                return meterFWVersion;
             }
         }
 
-
-        public bool verify_input(string input, string tipo="number")
+        public int SwitchState
         {
-            try
+            set
             {
-                int number = Convert.ToInt32(input);
-                if (tipo != "state")
-                    return true;
-                else if (number == 0 || number == 1 || number == 2)
-                {
-                    return true; 
-                }
-                else
-                {
-                    Console.WriteLine("Invalid Parameter \n");
-                    return false;
-                }
+
+                this.switchState = value;
             }
-            catch
+            get
             {
-                Console.WriteLine("Invalid Parameter (Only Integer)\n");
+                return switchState;
+            }
+        }
+
+        public bool IsInputValidState(int state)
+        {
+            if (state == 0 || state == 1 || state == 2)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid Parameter \n");
                 return false;
             }
 

@@ -10,7 +10,7 @@ namespace Exercise_landis.Control
     public class EndPointController
     {
 
-        public List<EndPoint> save (List <EndPoint> endPoints, EndPoint endPoint)
+        public List<EndPoint> SaveEndPoint (List <EndPoint> endPoints, EndPoint endPoint)
         {
             try
             {
@@ -30,18 +30,18 @@ namespace Exercise_landis.Control
         }
 
 
-        public List<EndPoint> edit (List<EndPoint> endPoints, string serial, int new_state)
+        public List<EndPoint> EditEndPoint (List<EndPoint> endPoints, string serial, int new_state)
         {
             try
             {
 
-                if (endPoints.Exists(p => p.Serial_number == serial))
+                if (endPoints.Exists(p => p.SerialNumber == serial))
                 {
 
                     // Lambda Expression
-                    var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+                    var item = endPoints.Where(c => c.SerialNumber.Equals(serial)).FirstOrDefault();
 
-                    item.Switch_state = new_state;
+                    item.SwitchState = new_state;
 
                     Console.WriteLine("Serial Number edited successfully");
                     Console.ReadLine();
@@ -62,15 +62,15 @@ namespace Exercise_landis.Control
             return endPoints;
         }
 
-        public List<EndPoint> delete (List<EndPoint> endPoints, string serial)
+        public List<EndPoint> DeleteEndPoint (List<EndPoint> endPoints, string serial)
         {
             try
             {
 
-                if (endPoints.Exists(p => p.Serial_number == serial))
+                if (endPoints.Exists(p => p.SerialNumber == serial))
                 {
                     //Lambda expression
-                    var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+                    var item = endPoints.Where(c => c.SerialNumber.Equals(serial)).FirstOrDefault();
 
                     endPoints.Remove(item);
 
@@ -94,7 +94,7 @@ namespace Exercise_landis.Control
             return endPoints;
         }
 
-        public void list_all (List<EndPoint> endPoints)
+        public void DeleteEndPoint (List<EndPoint> endPoints)
         {
             try
             {
@@ -104,11 +104,11 @@ namespace Exercise_landis.Control
                 foreach (var elemento in endPoints)
                 {
                     Console.WriteLine("Endpoint - " + cont);
-                    Console.WriteLine("Serial Number: " + elemento.Serial_number);
-                    Console.WriteLine("Model Id: " + elemento.Meter_model_id);
-                    Console.WriteLine("Meter number: " + elemento.Meter_number);
-                    Console.WriteLine("FW version: " + elemento.Meter_fw_version);
-                    Console.WriteLine("Switch state: " + elemento.Switch_state);
+                    Console.WriteLine("Serial Number: " + elemento.SerialNumber);
+                    Console.WriteLine("Model Id: " + elemento.MeterModelId);
+                    Console.WriteLine("Meter number: " + elemento.MeterNumber);
+                    Console.WriteLine("FW version: " + elemento.MeterFwVersion);
+                    Console.WriteLine("Switch state: " + elemento.SwitchState);
                     Console.WriteLine("---------------------");
 
                     cont++;
@@ -124,24 +124,24 @@ namespace Exercise_landis.Control
 
         }
 
-        public void find_by_serial (List<EndPoint> endPoints, string serial)
+        public void FindEndPointBySerial (List<EndPoint> endPoints, string serial)
         {
             try
             {
 
-                if (endPoints.Exists(p => p.Serial_number == serial))
+                if (endPoints.Exists(p => p.SerialNumber == serial))
                 {
                     // LINQ query
-                    var elemento = from x in endPoints
-                                   where x.Serial_number.Contains(serial)
+                    var element = from x in endPoints
+                                   where x.SerialNumber.Contains(serial)
                                    select x;
 
                     Console.WriteLine("--------------Result------------");
-                    Console.WriteLine("Serial Number: " + elemento.First().Serial_number);
-                    Console.WriteLine("Model Id: " + elemento.First().Meter_model_id);
-                    Console.WriteLine("Meter number: " + elemento.First().Meter_number);
-                    Console.WriteLine("FW version: " + elemento.First().Meter_fw_version);
-                    Console.WriteLine("Switch state: " + elemento.First().Switch_state);
+                    Console.WriteLine("Serial Number: " + element.First().SerialNumber);
+                    Console.WriteLine("Model Id: " + element.First().MeterModelId);
+                    Console.WriteLine("Meter number: " + element.First().MeterNumber);
+                    Console.WriteLine("FW version: " + element.First().MeterFwVersion);
+                    Console.WriteLine("Switch state: " + element.First().SwitchState);
 
                     Console.ReadLine();
                 }

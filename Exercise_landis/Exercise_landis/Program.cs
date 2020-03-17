@@ -11,8 +11,8 @@ namespace Exercise_landis
 {
     class Program
     {
-        static List<EndPoint> endPoints = new List<EndPoint>();
-        static EndPointController endPointController = new EndPointController();
+        private static List<EndPoint> endPoints = new List<EndPoint>();
+        private static EndPointController endPointController = new EndPointController();
 
 
         static void Main(string[] args)
@@ -40,19 +40,19 @@ namespace Exercise_landis
                     switch (option)
                     {
                         case "1":
-                            save_endpoint(endPoints);
+                            SaveEndPoint(endPoints);
                             break;
                         case "2":
-                            edit_endpoint(endPoints);
+                            EditEndPoint(endPoints);
                             break;
                         case "3":
-                            delete_endpoint(endPoints);
+                            DeleteEndPoint(endPoints);
                             break;
                         case "4":
-                            listall_endpoint(endPoints);
+                            listAllEndPoints(endPoints);
                             break;
                         case "5":
-                            find_endpoint_by_serial(endPoints);
+                            FindEndPointBySerial(endPoints);
                             break;
                         case "6":
                             break;
@@ -70,93 +70,164 @@ namespace Exercise_landis
             {
                 Console.WriteLine("Erro - " + ex.Message);
                 Console.ReadLine();
+                
             }
         }
 
-       static int verify_input(EndPoint endPoint, string tipo)
+        private static bool IsNumber(string data)
         {
-            if (tipo == "state")
+            bool isNumber = false;
+            char[] dataList = data.ToCharArray();
+
+            foreach (var item in dataList)
+                isNumber = char.IsDigit(item);
+
+            if (!isNumber)
             {
-                Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
+                Console.WriteLine("Invalid value, only integer");
+                Console.ReadLine();
             }
-
-            string state = Console.ReadLine();
-            while (!endPoint.verify_input(state, tipo))
-                state = Console.ReadLine();
-
-            int input = Convert.ToInt32(state);
-            return input;
-
+            return isNumber;
         }
+        
 
-        static bool verify_serial(string serial)
-        {
-            if (endPoints.Exists(p => p.Serial_number == serial))
+       private static bool VerifySerialExists(string serial, bool errorMsg= true)
+       {
+            if (endPoints.Exists(p => p.SerialNumber == serial))
                 return true;
             else
             {
-                Console.WriteLine("Serial Number not found");
-                Console.ReadLine();
+                if (errorMsg)
+                {
+                    Console.WriteLine("Serial Number not found");
+                    Console.ReadLine();
+                }
                 return false;
             }
                 
         }
 
-        static void save_endpoint(List<EndPoint> list)
+        static void SaveEndPoint(List<EndPoint> list)
         {
-            EndPoint endPoint = new EndPoint();
-            Console.WriteLine("EndPoint information: \n ");
-            Console.WriteLine("- Serial Number: ");
-            endPoint.Serial_number = Console.ReadLine();
-            Console.WriteLine("- Meter model id: ");
-            endPoint.Meter_model_id = verify_input(endPoint, "model id");
-            Console.WriteLine("- Meter Number: ");
-            endPoint.Meter_number = verify_input(endPoint, "meter number");
-            Console.WriteLine("- Meter fw version: ");
-            endPoint.Meter_fw_version = Console.ReadLine();
-
-            endPoint.Switch_state = verify_input(endPoint, "state");
-
-            endPoints = endPointController.save(list, endPoint);
-        }
-
-        static void edit_endpoint(List<EndPoint> list)
-        {
-            EndPoint endPoint = new EndPoint();
-            string serial;
-            int state;
-
-            Console.WriteLine("Which serial number do you want to edit? \n");
-            serial = Console.ReadLine();
-            if (verify_serial(serial))
+            try
             {
-                state = verify_input(endPoint, "state");
-                endPoints = endPointController.edit(list, serial, state);
+                int switchStateInt = 0;
+                string serialNumber = "", meterModelId = "", meterNumber = "", switchState = "";
+
+
+                EndPoint endPoint = new EndPoint();
+                Console.WriteLine("EndPoint information: \n ");
+                Console.WriteLine("- Serial Number: ");
+                serialNumber = Console.ReadLine();
+                if (!VerifySerialExists(serialNumber, false))
+                {
+                    endPoint.SerialNumber = serialNumber;
+                    Console.WriteLine("- Meter model id (only integer): ");
+                    meterModelId = Console.ReadLine();
+                    if (IsNumber(meterModelId))
+                        endPoint.MeterModelId = Convert.ToInt32(meterModelId);
+                    else
+                        return;
+
+                    Console.WriteLine("- Meter Number (only integer): ");
+                    meterNumber = Console.ReadLine();
+                    if (IsNumber(meterNumber))
+                        endPoint.MeterNumber = Convert.ToInt32(meterNumber);
+                    else
+                        return;
+
+                    Console.WriteLine("- Meter fw version: ");
+                    endPoint.MeterFwVersion = Console.ReadLine();
+
+                    Console.WriteLine("- Switch State (0) disconnected (1)connected (2) armed : ");
+                    switchState = Console.ReadLine();
+
+                    if (IsNumber(switchState))
+                    {
+                        switchStateInt = Convert.ToInt32(switchState);
+                        if (endPoint.IsInputValidState(switchStateInt))
+                            endPoint.SwitchState = switchStateInt;
+                        else
+                            return;
+                    }
+                    else
+                        return;
+
+                    endPoints = endPointController.SaveEndPoint(list, endPoint);
+                }
+                else
+                {
+                    Console.WriteLine("Serial Number already exists in memory");
+                    Console.ReadLine();
+                }
+
             }
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro - " + ex.Message);
+                Console.ReadLine();
+
+            }
         }
 
-        static void listall_endpoint(List<EndPoint> list)
+        static void EditEndPoint(List<EndPoint> list)
         {
-            endPointController.list_all(list);
+            try
+            {
+                EndPoint endPoint = new EndPoint();
+                string serial, switchState;
+                int switchStateInt = 0;
+
+                Console.WriteLine("Which serial number do you want to edit? \n");
+                serial = Console.ReadLine();
+                if (VerifySerialExists(serial))
+                {
+                    Console.WriteLine("- Switch State (0) disconnected (1)connected (2) armed : ");
+                    switchState = Console.ReadLine();
+
+                    if (IsNumber(switchState))
+                    {
+                        switchStateInt = Convert.ToInt32(switchState);
+                        if (endPoint.IsInputValidState(switchStateInt))
+                            endPoints = endPointController.EditEndPoint(list, serial, switchStateInt);
+                        else
+                            return;
+                    }
+                    else
+                        return;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro - " + ex.Message);
+                Console.ReadLine();
+
+            }
+             
         }
 
-        static void delete_endpoint(List<EndPoint> list)
+        static void listAllEndPoints(List<EndPoint> list)
+        {
+            endPointController.DeleteEndPoint(list);
+        }
+
+        static void DeleteEndPoint(List<EndPoint> list)
         {
 
             Console.WriteLine("Which serial number do you want to delete? \n");
             string serial = Console.ReadLine();
 
-            endPoints = endPointController.delete(list, serial);
+            endPoints = endPointController.DeleteEndPoint(list, serial);
         }
 
-        static void find_endpoint_by_serial(List<EndPoint> list)
+        static void FindEndPointBySerial(List<EndPoint> list)
         {
 
             Console.WriteLine("Which serial number do you want to find? \n");
             string serial = Console.ReadLine();
 
-            endPointController.find_by_serial(list, serial);
+            endPointController.FindEndPointBySerial(list, serial);
 
         }
     }
