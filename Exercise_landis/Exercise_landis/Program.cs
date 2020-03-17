@@ -73,16 +73,19 @@ namespace Exercise_landis
             }
         }
 
-       static int verify_state(EndPoint endPoint)
+       static int verify_input(EndPoint endPoint, string tipo)
         {
-            Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
+            if (tipo == "state")
+            {
+                Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
+            }
 
             string state = Console.ReadLine();
-            while (!endPoint.valida_switch_state(state))
+            while (!endPoint.verify_input(state, tipo))
                 state = Console.ReadLine();
 
-            int int_state = Convert.ToInt32(state);
-            return int_state;
+            int input = Convert.ToInt32(state);
+            return input;
 
         }
 
@@ -106,13 +109,13 @@ namespace Exercise_landis
             Console.WriteLine("- Serial Number: ");
             endPoint.Serial_number = Console.ReadLine();
             Console.WriteLine("- Meter model id: ");
-            endPoint.Meter_model_id = Convert.ToInt32(Console.ReadLine());
+            endPoint.Meter_model_id = verify_input(endPoint, "model id");
             Console.WriteLine("- Meter Number: ");
-            endPoint.Meter_number = Convert.ToInt32(Console.ReadLine());
+            endPoint.Meter_number = verify_input(endPoint, "meter number");
             Console.WriteLine("- Meter fw version: ");
             endPoint.Meter_fw_version = Console.ReadLine();
 
-            endPoint.Switch_state = verify_state(endPoint);
+            endPoint.Switch_state = verify_input(endPoint, "state");
 
             endPoints = endPointController.save(list, endPoint);
         }
@@ -127,7 +130,7 @@ namespace Exercise_landis
             serial = Console.ReadLine();
             if (verify_serial(serial))
             {
-                state = verify_state(endPoint);
+                state = verify_input(endPoint, "state");
                 endPoints = endPointController.edit(list, serial, state);
             }
             

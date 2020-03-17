@@ -15,7 +15,7 @@ namespace Exercise_landis_unittests
             List<EndPoint> endPoints = new List<EndPoint>();
             EndPointController endPointController = new EndPointController();
 
-            Assert.ThrowsException<System.>(() => endPointController.save(endPoints));
+           
 
         }
     }

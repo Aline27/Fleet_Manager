@@ -82,24 +82,27 @@ namespace Exercise_landis.Model
             }
         }
 
-        public bool valida_switch_state(string new_state)
+
+        public bool verify_input(string input, string tipo="number")
         {
             try
             {
-                int state = Convert.ToInt32(new_state);
-                if (state == 0 || state == 1 || state == 2)
-                {
+                int number = Convert.ToInt32(input);
+                if (tipo != "state")
                     return true;
+                else if (number == 0 || number == 1 || number == 2)
+                {
+                    return true; 
                 }
                 else
                 {
-                    Console.WriteLine("Invalid State \n");
+                    Console.WriteLine("Invalid Parameter \n");
                     return false;
                 }
             }
             catch
             {
-                Console.WriteLine("Invalid State \n");
+                Console.WriteLine("Invalid Parameter (Only Integer)\n");
                 return false;
             }
 
