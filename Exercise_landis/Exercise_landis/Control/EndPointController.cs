@@ -64,110 +64,146 @@ namespace Exercise_landis.Control
 
         public List<EndPoint> edit (List<EndPoint> endPoints)
         {
-            Console.Clear();
-
-            Console.WriteLine("Which serial number do you want to edit? \n");
-            string serial = Console.ReadLine();
-
-            if (endPoints.Exists(p => p.Serial_number == serial))
+            try
             {
-                Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
-                int new_state = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
 
-                var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+                Console.WriteLine("Which serial number do you want to edit? \n");
+                string serial = Console.ReadLine();
 
-                item.Switch_state = new_state;
+                if (endPoints.Exists(p => p.Serial_number == serial))
+                {
+                    Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
+                    int new_state = Convert.ToInt32(Console.ReadLine());
 
-                Console.WriteLine("Serial Number edited successfully");
-                Console.ReadLine();
+                    // Lambda Expression
+                    var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
 
+                    item.Switch_state = new_state;
+
+                    Console.WriteLine("Serial Number edited successfully");
+                    Console.ReadLine();
+
+                }
+                else
+                {
+                    Console.WriteLine("Serial Number not found");
+                    Console.ReadLine();
+                }
             }
-            else
+            catch(Exception ex)
             {
-                Console.WriteLine("Serial Number not found");
+                Console.WriteLine("Erro - " + ex.Message);
                 Console.ReadLine();
             }
-
 
             return endPoints;
         }
 
         public List<EndPoint> delete (List<EndPoint> endPoints)
         {
-            Console.Clear();
-
-            Console.WriteLine("Which serial number do you want to delete? \n");
-            string serial = Console.ReadLine();
-
-            if (endPoints.Exists(p => p.Serial_number == serial))
+            try
             {
-                var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+                Console.Clear();
 
-                endPoints.Remove(item);
+                Console.WriteLine("Which serial number do you want to delete? \n");
+                string serial = Console.ReadLine();
 
-                Console.WriteLine("Serial Number removed successfully");
-                Console.ReadLine();
+                if (endPoints.Exists(p => p.Serial_number == serial))
+                {
+                    //Lambda expression
+                    var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+
+                    endPoints.Remove(item);
+
+                    Console.WriteLine("Serial Number removed successfully");
+                    Console.ReadLine();
+
+                }
+                else
+                {
+                    Console.WriteLine("Serial Number not found");
+                    Console.ReadLine();
+                }
 
             }
-            else
+            catch(Exception ex)
             {
-                Console.WriteLine("Serial Number not found");
+                Console.WriteLine("Erro - " + ex.Message);
                 Console.ReadLine();
             }
-
 
             return endPoints;
         }
 
         public void list_all (List<EndPoint> endPoints)
         {
-            Console.Clear();
-            Console.WriteLine("------EndPoints------\n");
-
-            int cont = 0;
-            foreach (var elemento in endPoints)
+            try
             {
-                Console.WriteLine("Endpoint - "+cont);
-                Console.WriteLine("Serial Number: "+elemento.Serial_number);
-                Console.WriteLine("Model Id: "+elemento.Meter_model_id);
-                Console.WriteLine("Meter number: "+elemento.Meter_number);
-                Console.WriteLine("FW version: "+elemento.Meter_fw_version);
-                Console.WriteLine("Switch state: "+elemento.Switch_state);
-                Console.WriteLine("---------------------");
+                Console.Clear();
+                Console.WriteLine("------EndPoints------\n");
 
-                cont++;
+                int cont = 0;
+                foreach (var elemento in endPoints)
+                {
+                    Console.WriteLine("Endpoint - " + cont);
+                    Console.WriteLine("Serial Number: " + elemento.Serial_number);
+                    Console.WriteLine("Model Id: " + elemento.Meter_model_id);
+                    Console.WriteLine("Meter number: " + elemento.Meter_number);
+                    Console.WriteLine("FW version: " + elemento.Meter_fw_version);
+                    Console.WriteLine("Switch state: " + elemento.Switch_state);
+                    Console.WriteLine("---------------------");
+
+                    cont++;
+                }
+
+                Console.ReadLine();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Erro - " + ex.Message);
+                Console.ReadLine();
             }
 
-            Console.ReadLine();
         }
 
         public void find_by_serial (List<EndPoint> endPoints)
         {
-            Console.Clear();
-
-            Console.WriteLine("Which serial number do you want to find? \n");
-            string serial = Console.ReadLine();
-
-            if (endPoints.Exists(p => p.Serial_number == serial))
+            try
             {
-                var elemento = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
+                Console.Clear();
 
-                Console.WriteLine("--------------Result------------");
-                Console.WriteLine("Serial Number: " + elemento.Serial_number);
-                Console.WriteLine("Model Id: " + elemento.Meter_model_id);
-                Console.WriteLine("Meter number: " + elemento.Meter_number);
-                Console.WriteLine("FW version: " + elemento.Meter_fw_version);
-                Console.WriteLine("Switch state: " + elemento.Switch_state);
+                Console.WriteLine("Which serial number do you want to find? \n");
+                string serial = Console.ReadLine();
 
+                if (endPoints.Exists(p => p.Serial_number == serial))
+                {
+                    // LINQ query
+                    var elemento = from x in endPoints
+                                   where x.Serial_number.Contains(serial)
+                                   select x;
+
+                    Console.WriteLine("--------------Result------------");
+                    Console.WriteLine("Serial Number: " + elemento.First().Serial_number);
+                    Console.WriteLine("Model Id: " + elemento.First().Meter_model_id);
+                    Console.WriteLine("Meter number: " + elemento.First().Meter_number);
+                    Console.WriteLine("FW version: " + elemento.First().Meter_fw_version);
+                    Console.WriteLine("Switch state: " + elemento.First().Switch_state);
+
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("Serial Number not found");
+                    Console.ReadLine();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Erro - " + ex.Message);
                 Console.ReadLine();
             }
-            else
-            {
-                Console.WriteLine("Serial Number not found");
-                Console.ReadLine();
-            }
-
-
         }
 
         public void exit()
