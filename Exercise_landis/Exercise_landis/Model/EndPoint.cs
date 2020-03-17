@@ -95,5 +95,21 @@ namespace Exercise_landis.Model
             }
 
         }
+
+        public bool IsNumber(string data, bool msgError=true)
+        {
+            bool isNumber = false;
+            char[] dataList = data.ToCharArray();
+
+            foreach (var item in dataList)
+                isNumber = char.IsDigit(item);
+
+            if (!isNumber && msgError)
+            {
+                Console.WriteLine("Invalid value, only integer");
+                Console.ReadLine();
+            }
+            return isNumber;
+        }
     }
 }

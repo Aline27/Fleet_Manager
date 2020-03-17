@@ -34,7 +34,7 @@ namespace Exercise_landis.Control
         {
             try
             {
-
+                // Verify if endpoint exists in list
                 if (endPoints.Exists(p => p.SerialNumber == serial))
                 {
 

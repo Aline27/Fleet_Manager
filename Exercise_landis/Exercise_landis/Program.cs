@@ -9,14 +9,22 @@ using Exercise_landis.Control;
 
 namespace Exercise_landis
 {
+    /// <summary>
+    /// This class contains the main user interface for this exercise 
+    /// </summary>
     class Program
     {
+
         private static List<EndPoint> endPoints = new List<EndPoint>();
         private static EndPointController endPointController = new EndPointController();
 
-
+        /// <summary>
+        /// Show options for user and wait an action
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
+            
             try
             {
                 string option = "";
@@ -73,24 +81,15 @@ namespace Exercise_landis
                 
             }
         }
-
-        private static bool IsNumber(string data)
-        {
-            bool isNumber = false;
-            char[] dataList = data.ToCharArray();
-
-            foreach (var item in dataList)
-                isNumber = char.IsDigit(item);
-
-            if (!isNumber)
-            {
-                Console.WriteLine("Invalid value, only integer");
-                Console.ReadLine();
-            }
-            return isNumber;
-        }
-        
-
+     
+        /// <summary>
+        /// Verify if serial already exists in memory
+        /// </summary>
+        /// <param name="serial"> string </param>
+        /// <param name="errorMsg"> bool </param>
+        /// <returns>
+        /// boolean
+        /// </returns>
        private static bool VerifySerialExists(string serial, bool errorMsg= true)
        {
             if (endPoints.Exists(p => p.SerialNumber == serial))
@@ -107,13 +106,16 @@ namespace Exercise_landis
                 
         }
 
+        /// <summary>
+        /// Save endpoint in memory 
+        /// </summary>
+        /// <param name="list"> lista de endpoints</param>
         static void SaveEndPoint(List<EndPoint> list)
         {
             try
             {
                 int switchStateInt = 0;
                 string serialNumber = "", meterModelId = "", meterNumber = "", switchState = "";
-
 
                 EndPoint endPoint = new EndPoint();
                 Console.WriteLine("EndPoint information: \n ");
@@ -124,14 +126,14 @@ namespace Exercise_landis
                     endPoint.SerialNumber = serialNumber;
                     Console.WriteLine("- Meter model id (only integer): ");
                     meterModelId = Console.ReadLine();
-                    if (IsNumber(meterModelId))
+                    if (endPoint.IsNumber(meterModelId))
                         endPoint.MeterModelId = Convert.ToInt32(meterModelId);
                     else
                         return;
 
                     Console.WriteLine("- Meter Number (only integer): ");
                     meterNumber = Console.ReadLine();
-                    if (IsNumber(meterNumber))
+                    if (endPoint.IsNumber(meterNumber))
                         endPoint.MeterNumber = Convert.ToInt32(meterNumber);
                     else
                         return;
@@ -142,7 +144,7 @@ namespace Exercise_landis
                     Console.WriteLine("- Switch State (0) disconnected (1)connected (2) armed : ");
                     switchState = Console.ReadLine();
 
-                    if (IsNumber(switchState))
+                    if (endPoint.IsNumber(switchState))
                     {
                         switchStateInt = Convert.ToInt32(switchState);
                         if (endPoint.IsInputValidState(switchStateInt))
@@ -170,6 +172,10 @@ namespace Exercise_landis
             }
         }
 
+        /// <summary>
+        /// User can edit an endpoint based on serial number
+        /// </summary>
+        /// <param name="list"></param>
         static void EditEndPoint(List<EndPoint> list)
         {
             try
@@ -185,7 +191,7 @@ namespace Exercise_landis
                     Console.WriteLine("- Switch State (0) disconnected (1)connected (2) armed : ");
                     switchState = Console.ReadLine();
 
-                    if (IsNumber(switchState))
+                    if (endPoint.IsNumber(switchState))
                     {
                         switchStateInt = Convert.ToInt32(switchState);
                         if (endPoint.IsInputValidState(switchStateInt))
@@ -207,11 +213,19 @@ namespace Exercise_landis
              
         }
 
+        /// <summary>
+        /// List all endpoints in memory
+        /// </summary>
+        /// <param name="list"></param>
         static void listAllEndPoints(List<EndPoint> list)
         {
             endPointController.DeleteEndPoint(list);
         }
 
+        /// <summary>
+        /// User can delete an endpoint based on serial number
+        /// </summary>
+        /// <param name="list"></param>
         static void DeleteEndPoint(List<EndPoint> list)
         {
 
@@ -221,6 +235,10 @@ namespace Exercise_landis
             endPoints = endPointController.DeleteEndPoint(list, serial);
         }
 
+        /// <summary>
+        /// User can find information about an endpoint
+        /// </summary>
+        /// <param name="list"></param>
         static void FindEndPointBySerial(List<EndPoint> list)
         {
 
