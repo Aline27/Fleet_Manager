@@ -7,27 +7,13 @@ using Exercise_landis.Model;
 
 namespace Exercise_landis.Control
 {
-    class EndPointController
+    public class EndPointController
     {
 
-        public List<EndPoint> save (List <EndPoint> endPoints)
+        public List<EndPoint> save (List <EndPoint> endPoints, EndPoint endPoint)
         {
             try
             {
-                Console.Clear();
-
-                EndPoint endPoint = new EndPoint();
-                Console.WriteLine("EndPoint information: \n ");
-                Console.WriteLine("- Serial Number: ");
-                endPoint.Serial_number = Console.ReadLine();
-                Console.WriteLine("- Meter model id: ");
-                endPoint.Meter_model_id = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("- Meter Number: ");
-                endPoint.Meter_number = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("- Meter fw version: ");
-                endPoint.Meter_fw_version = Console.ReadLine();
-                endPoint = validate_switch_state(endPoint);
-
                 endPoints.Add(endPoint);
 
                 Console.WriteLine("Serial Number saved successfully");
@@ -43,38 +29,14 @@ namespace Exercise_landis.Control
 
         }
 
-        private EndPoint validate_switch_state(EndPoint endPoint)
-        {
-            int state = 5;
-            while (state != 0 && state != 1 && state != 2)
-            {
-                Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
-                state = Convert.ToInt32(Console.ReadLine());
-                if (state == 0 || state == 1 || state == 2)
-                    endPoint.Switch_state = state;
-                else
-                {
-                    Console.WriteLine("Invalid Number");
-                }
-            }
 
-            return endPoint;
-
-        }
-
-        public List<EndPoint> edit (List<EndPoint> endPoints)
+        public List<EndPoint> edit (List<EndPoint> endPoints, string serial, int new_state)
         {
             try
             {
-                Console.Clear();
-
-                Console.WriteLine("Which serial number do you want to edit? \n");
-                string serial = Console.ReadLine();
 
                 if (endPoints.Exists(p => p.Serial_number == serial))
                 {
-                    Console.WriteLine("- Switch State - (0)disconnect (1)connect (2)Armed: ");
-                    int new_state = Convert.ToInt32(Console.ReadLine());
 
                     // Lambda Expression
                     var item = endPoints.Where(c => c.Serial_number.Equals(serial)).FirstOrDefault();
@@ -100,14 +62,10 @@ namespace Exercise_landis.Control
             return endPoints;
         }
 
-        public List<EndPoint> delete (List<EndPoint> endPoints)
+        public List<EndPoint> delete (List<EndPoint> endPoints, string serial)
         {
             try
             {
-                Console.Clear();
-
-                Console.WriteLine("Which serial number do you want to delete? \n");
-                string serial = Console.ReadLine();
 
                 if (endPoints.Exists(p => p.Serial_number == serial))
                 {
@@ -140,7 +98,6 @@ namespace Exercise_landis.Control
         {
             try
             {
-                Console.Clear();
                 Console.WriteLine("------EndPoints------\n");
 
                 int cont = 0;
@@ -167,14 +124,10 @@ namespace Exercise_landis.Control
 
         }
 
-        public void find_by_serial (List<EndPoint> endPoints)
+        public void find_by_serial (List<EndPoint> endPoints, string serial)
         {
             try
             {
-                Console.Clear();
-
-                Console.WriteLine("Which serial number do you want to find? \n");
-                string serial = Console.ReadLine();
 
                 if (endPoints.Exists(p => p.Serial_number == serial))
                 {

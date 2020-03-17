@@ -68,16 +68,41 @@ namespace Exercise_landis.Model
                 return meter_fw_version;
             }
         }
+
         public int Switch_state
         {
             set
             {
+
                 this.switch_state = value;
             }
             get
             {
                 return switch_state;
             }
+        }
+
+        public bool valida_switch_state(string new_state)
+        {
+            try
+            {
+                int state = Convert.ToInt32(new_state);
+                if (state == 0 || state == 1 || state == 2)
+                {
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid State \n");
+                    return false;
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Invalid State \n");
+                return false;
+            }
+
         }
     }
 }
