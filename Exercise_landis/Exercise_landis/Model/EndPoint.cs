@@ -90,7 +90,7 @@ namespace Exercise_landis.Model
             }
             else
             {
-                Console.WriteLine("Invalid Parameter \n");
+                Console.WriteLine("Invalid Parameter");
                 return false;
             }
 
@@ -107,7 +107,7 @@ namespace Exercise_landis.Model
             if (!isNumber && msgError)
             {
                 Console.WriteLine("Invalid value, only integer");
-                Console.ReadLine();
+
             }
             return isNumber;
         }

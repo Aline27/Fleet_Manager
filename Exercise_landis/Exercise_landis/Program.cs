@@ -66,6 +66,7 @@ namespace Exercise_landis
                             break;
                         default:
                             Console.WriteLine("Option not found! \n");
+                            Console.ReadLine();
                             break;
 
                     }
@@ -85,10 +86,11 @@ namespace Exercise_landis
         /// <summary>
         /// Verify if serial already exists in memory
         /// </summary>
-        /// <param name="serial"> string </param>
-        /// <param name="errorMsg"> bool </param>
+        /// <param name="serial"> string that contains serial number to be verified </param>
+        /// <param name="errorMsg"> boolean for show or not error message </param>
         /// <returns>
-        /// boolean
+        /// true => serial number already exists
+        /// false => serial number doesn't exists
         /// </returns>
        private static bool VerifySerialExists(string serial, bool errorMsg= true)
        {
@@ -107,6 +109,37 @@ namespace Exercise_landis
         }
 
         /// <summary>
+        /// This method is responsible for waiting until the user enters a valid parameter
+        /// </summary>
+        /// <param name="verifySwitchState"> boolean for verify if switch state is valid </param>
+        /// <param name="verifyNumber"> boolean for verify if the value is a number</param>
+        /// <param name="value"> string that contains user input</param>
+        /// <returns>
+        /// int containing a valid value
+        /// </returns>
+        private static int WaitUntilValidInput(bool verifySwitchState, bool verifyNumber, string value)
+        {
+
+            EndPoint endPoint = new EndPoint();
+
+            if (verifyNumber)
+            {
+                while (!endPoint.IsNumber(value))
+                    value = Console.ReadLine();
+            }
+
+            int valueInt = Convert.ToInt32(value);
+
+            if (verifySwitchState)
+            {
+                while (!endPoint.IsInputValidState(valueInt))
+                    valueInt = Convert.ToInt32(Console.ReadLine());
+            }
+
+            return valueInt;
+        }
+
+        /// <summary>
         /// Save endpoint in memory 
         /// </summary>
         /// <param name="list"> lista de endpoints</param>
@@ -114,7 +147,6 @@ namespace Exercise_landis
         {
             try
             {
-                int switchStateInt = 0;
                 string serialNumber = "", meterModelId = "", meterNumber = "", switchState = "";
 
                 EndPoint endPoint = new EndPoint();
@@ -126,17 +158,11 @@ namespace Exercise_landis
                     endPoint.SerialNumber = serialNumber;
                     Console.WriteLine("- Meter model id (only integer): ");
                     meterModelId = Console.ReadLine();
-                    if (endPoint.IsNumber(meterModelId))
-                        endPoint.MeterModelId = Convert.ToInt32(meterModelId);
-                    else
-                        return;
+                    endPoint.MeterModelId = WaitUntilValidInput(false, true, meterModelId);
 
                     Console.WriteLine("- Meter Number (only integer): ");
                     meterNumber = Console.ReadLine();
-                    if (endPoint.IsNumber(meterNumber))
-                        endPoint.MeterNumber = Convert.ToInt32(meterNumber);
-                    else
-                        return;
+                    endPoint.MeterNumber = WaitUntilValidInput(false, true, meterNumber);
 
                     Console.WriteLine("- Meter fw version: ");
                     endPoint.MeterFwVersion = Console.ReadLine();
@@ -144,16 +170,7 @@ namespace Exercise_landis
                     Console.WriteLine("- Switch State (0) disconnected (1)connected (2) armed : ");
                     switchState = Console.ReadLine();
 
-                    if (endPoint.IsNumber(switchState))
-                    {
-                        switchStateInt = Convert.ToInt32(switchState);
-                        if (endPoint.IsInputValidState(switchStateInt))
-                            endPoint.SwitchState = switchStateInt;
-                        else
-                            return;
-                    }
-                    else
-                        return;
+                    endPoint.SwitchState = WaitUntilValidInput(true, true, switchState);
 
                     endPoints = endPointController.SaveEndPoint(list, endPoint);
                 }
@@ -191,16 +208,8 @@ namespace Exercise_landis
                     Console.WriteLine("- Switch State (0) disconnected (1)connected (2) armed : ");
                     switchState = Console.ReadLine();
 
-                    if (endPoint.IsNumber(switchState))
-                    {
-                        switchStateInt = Convert.ToInt32(switchState);
-                        if (endPoint.IsInputValidState(switchStateInt))
-                            endPoints = endPointController.EditEndPoint(list, serial, switchStateInt);
-                        else
-                            return;
-                    }
-                    else
-                        return;
+                    switchStateInt = WaitUntilValidInput(true, true, switchState);
+                    endPoints = endPointController.EditEndPoint(list, serial, switchStateInt);
 
                 }
             }
